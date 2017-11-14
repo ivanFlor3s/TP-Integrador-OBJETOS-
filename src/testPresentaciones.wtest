@@ -1,0 +1,74 @@
+import Guitarras.*
+import Artistas.*
+import Canciones.*
+import lugares.*
+import Presentaciones.*
+
+describe "Tests del Ejercicio de Musica"{
+	
+
+	
+	var joaquin = new MusicoDeGrupo(20,5)
+	var lucia = new VocalistaPopular(70)
+	var luisAlberto = new Guitarrista(1000,gibson)
+	
+	var fecha1 = new Date(15,11,2017)
+	var fecha5 = new Date (20,11,107)
+	var fecha2 = new Date (05,08,2017)
+	var fecha3 = new Date (08,08,2017)
+	
+	var presentacionLunaPark = new Presentacion(lunaPark,fecha5)
+	var presentacionLaTrastienda = new Presentacion(laTrastienda,fecha1) // ver que onda las fechas aca 
+	
+	fixture{
+		
+		presentacionLunaPark.agregarCantante(joaquin)
+		presentacionLunaPark.agregarCantante(lucia)
+		presentacionLunaPark.agregarCantante(luisAlberto)
+		presentacionLaTrastienda.agregarCantante(luisAlberto)
+		presentacionLaTrastienda.agregarCantante(joaquin)
+		presentacionLaTrastienda.agregarCantante(lucia)
+		joaquin.entrarEnGrupo()
+		lucia.hacerse(new Palabrero("familia"))
+		joaquin.cobrarDeUnaForma(new SegunTocaSolo(100))
+		lucia.cobrarDeUnaForma(new SegunCapac(500,5000))
+	}
+	
+	test "Cuanto cobra Joaquin en el Luna Park. 50"{
+		joaquin.entrarEnGrupo()
+	
+		assert.equals(50,joaquin.cobra(presentacionLunaPark))
+	}
+	test "Cuanto cobra Joaquin actuando solo en la trastienda"{
+		joaquin.hacerseSolista()
+		presentacionLaTrastienda.quitarCantante(lucia)
+		presentacionLaTrastienda.quitarCantante(luisAlberto)
+		assert.equals(50,joaquin.cobra(presentacionLaTrastienda))
+		}
+	test "Queremos saber la capacidad de La Trastienda para el 05 de agosto del 2017, 700"{
+		assert.equals(700,laTrastienda.capacidad(fecha2))
+		}		
+		
+	test "Queremos saber la capacidad de La Trastienda para el 08 de agosto del 2017, 400"{
+		assert.equals(400,laTrastienda.capacidad(fecha3))
+	}
+	
+	test "Queremos saber cuanto cobra Lucia por la presentacion del Luna Park"{
+	assert.equals(500,lucia.cobra(presentacionLunaPark))
+	}
+	test "Queremos saber cuanto cobra Lucia por la presentacion del la Trastienda"{
+	assert.equals(400,lucia.cobra(presentacionLaTrastienda))
+	}
+	test "Queremos saber cuanto cobra Luis Alberto por la presentacion del Luna Park"{
+		assert.equals(1000,luisAlberto.cobra(presentacionLunaPark))
+	}
+	test "Queremos saber cuanto cobra Luis Alberto por la presentacion de La Trastienda"{
+		assert.equals(1200,luisAlberto.cobra(presentacionLaTrastienda))
+	}
+	test "Queremos saber el costo de la presentacion del Luna Park"{
+		assert.equals(1550,presentacionLunaPark.costo())
+	}
+	test "Queremos saber el costo de la presentacion de la Trastienda el 15/11/2017"{
+		assert.equals(1650,presentacionLaTrastienda.costo())
+	}	
+}

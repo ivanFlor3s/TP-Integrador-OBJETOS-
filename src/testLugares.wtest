@@ -1,0 +1,21 @@
+import lugares.*
+
+describe "tests capacidad por lugares"{
+	const fecha1 = new Date(5,8,2017)
+	const fecha2 = new Date(8,8,2017)
+	test " la capacidad de La Trastienda para el 05 de agosto del 2017 es 700"{
+		assert.equals( laTrastienda.capacidad(fecha1),700)
+		}
+	test  "la capacidad de La Trastienda para el 08 de agosto del 2017 es 400"{
+		assert.equals(400,laTrastienda.capacidad(fecha2))
+	}
+	test  "la capacidad del Luna Park para el 05 de agosto del 2017 es 9290"{
+		assert.equals(9290,lunaPark.capacidad(fecha1))
+	}
+	test "la capacidad del Luna Park para el 08 de agosto del 2017 es 9290"{
+		assert.equals(9290,lunaPark.capacidad(fecha2))
+	}
+}
+
+
+

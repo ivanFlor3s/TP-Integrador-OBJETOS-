@@ -1,0 +1,105 @@
+import Artistas.*
+import Canciones.*
+import Guitarras.*
+
+describe "Tests del Ejercicio de Musica"{
+	
+	var cancionCisne = new Cancion("Cisne",312,"Hoy el viento se abri� qued� vac�o el aire una vez m�s y el manantial brot� y nadie est� aqu� y puedo ver que solo estallan las hojas al brillar")
+	var cancionAlmaDeDiamante = new Cancion("Alma de diamante",216,"Ven a m� con tu dulce luz alma de diamante. Y aunque el sol se nuble despu�s sos alma de diamante. cielo o piel silencio o verdad sos alma de diamante. Por eso ven as� con la humanidad alma de diamante")
+	var cancionCrisantemo = new Cancion("Crisantemo",175,"T�came junto a esta pared, yo quede por aqu�... cuando no hubo m�s luz... quiero mirar a trav�s de mi piel... Crisantemo, que se abri�... encuentra el camino hacia el cielo")
+	var cancionLaFamilia = new Cancion("La Familia",264,"Quiero brindar por mi gente sencilla, por el amor brindo por la familia")
+	var cancionEres = new Cancion("Eres",145,"Eres lo mejor que me pas� en la vida, no tengo duda, no habr� m�s nada despu�s de ti. Eres lo que le dio brillo al d�a a d�a, y as� ser� por siempre, no cambiar�, hasta el final de mis d�as.")
+	var cancionCorazonAmericano = new Cancion("Coraz�n Americano",154,"Canta coraz�n, canta m�s alto, que tu pena al fin se va marchando, el nuevo milenio ha de encontrarnos, junto coraz�n, como so�amos.")
+
+	var especialLaFamilia = new Album("Especial la familia",17,06,1992,100000,89000)
+	var laSole = new Album("La Sole",04,02,2005,200000,130000)
+	var paraLosArboles = new Album("Para los �rboles",31,03,2003,50000,49000)
+	var justCrisantemo = new Album("Just Crisantemo",05,12,2007,28000,27500)
+	
+	var joaquin = new MusicoDeGrupo(20,5)
+	var lucia = new VocalistaPopular(70)
+	var soledad = new VocalistaPopular(55)
+	var luisAlberto = new Guitarrista(1000,gibson)
+	
+	fixture{
+		
+		joaquin.agregarAlbumPublicado(especialLaFamilia)
+		soledad.agregarAlbumPublicado(laSole)
+		luisAlberto.agregarAlbumPublicado(paraLosArboles)
+		luisAlberto.agregarAlbumPublicado(justCrisantemo)
+		especialLaFamilia.agregarCancion(cancionLaFamilia)
+		laSole.agregarCancion(cancionEres)
+		laSole.agregarCancion(cancionCorazonAmericano)
+		paraLosArboles.agregarCancion(cancionCisne)
+		paraLosArboles.agregarCancion(cancionAlmaDeDiamante)
+		justCrisantemo.agregarCancion(cancionCrisantemo)
+		lucia.hacerse(new Palabrero("familia"))
+		soledad.hacerse(new Palabrero("amor"))
+}
+	
+	test "Joaqu�n canta en el grupo Pimpinela. Tiene 25 de habilidad " {
+		joaquin.entrarEnGrupo()
+		assert.equals(25,joaquin.habilidad())
+	}
+	
+	test "Joaqu�n deja el grupo. Tiene 20 de habilidad "{
+		joaquin.hacerseSolista()
+		assert.equals(20,joaquin.habilidad())
+	}
+	test "Lucia canta en el grupo Pimpinela. Tiene 50 de habilidad " {
+		lucia.entrarEnGrupo()
+		assert.equals(50,lucia.habilidad())
+	}
+	test "Lucia deja el grupo. Tiene 70 de habilidad " {
+		lucia.hacerseSolista()
+		assert.equals(70,lucia.habilidad())
+	}
+	test"Luis Alberto toca con la Fender. Tiene 80 de habilidad"{
+		luisAlberto.guitarra(fender)
+		assert.equals(80,luisAlberto.habilidad())
+	}
+	test"Luis Alberto toca con la Gibson sana. Tiene 100 de habilidad"{
+		luisAlberto.guitarra(gibson)
+		gibson.cambiarASana()
+		assert.equals(100,luisAlberto.habilidad())
+	}
+	test"Luis Alberto toca con la Gibson no sana. Tiene 40 de habilidad"{
+		luisAlberto.guitarra(gibson)
+		gibson.cambiarARota()
+		assert.equals(40,luisAlberto.habilidad())
+		}
+	
+	test "Joaqu�n no interpreta bien la canci�n �La Familia�" {
+		assert.that(joaquin.interpretaBien(cancionLaFamilia))	
+	}
+	
+	test "Joaqu�n interpreta bien la canci�n �Cisne�" {
+		assert.that(joaquin.interpretaBien(cancionCisne))	
+	}
+	
+	test "Lucia interpreta bien la canci�n �La Familia�" {
+		assert.that(lucia.interpretaBien(cancionLaFamilia))
+	}
+	test "Lucia no interpreta bien la canci�n �Cisne�" {
+		assert.notThat(lucia.interpretaBien(cancionCisne))	
+	}
+	test "Luis Alberto interpreta bien la canci�n �La Familia� "{
+		assert.that(luisAlberto.interpretaBien(cancionLaFamilia))
+	}
+	test "Luis Alberto interpreta bien la canci�n �Cisne� "{
+		assert.that(luisAlberto.interpretaBien(cancionCisne))
+	}
+		test "Joaquin tocando en grupo tiene la misma habilidad al preguntar dos veces"{
+		joaquin.entrarEnGrupo()
+		var habilidadInicial = joaquin.habilidad()
+		assert.equals(habilidadInicial,joaquin.habilidad())
+		}
+		
+	test "Lucia tocando en grupo tiene la misma habilidad al preguntar dos veces"{
+		lucia.entrarEnGrupo()
+		var habilidadInicial = lucia.habilidad()
+		assert.equals(habilidadInicial,lucia.habilidad())
+
+}
+		
+}

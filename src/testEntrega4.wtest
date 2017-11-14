@@ -1,0 +1,161 @@
+import Canciones.*
+import Pdpalooza.*
+import Artistas.*
+import Presentaciones.*
+import lugares.*
+import Guitarras.*
+import Bandas.*
+
+describe "test de los cambios en las canciones para la entrega 3"{
+	
+	var cancionDeAlicia = new Cancion ("Cancion de Alicia",510,"Quien sabe Alicia, este pais no estuvo hecho porque si. Te vas a ir, vas a salir pero te quedas, donde mas vas a ir? y es que Aqui, sabes el trabalenguas, trabalenguas, el asesino te asesina, y es mucho para ti. Se acabo ese juego que te hacia feliz.")
+	var cancionCisne = new Cancion("Cisne",312,"Hoy el viento se abrio quedo vacio el aire una vez mas y el manantial broto y nadie esta aqui y puedo ver que solo estallan las hojas al brillar")
+	var cancionAlmaDeDiamante = new Cancion("Alma de diamante",216,"Ven a mi con tu dulce luz alma de diamante. Y aunque el sol se nuble despues sos alma de diamante. Cielo o piel silencio o verdad sos alma de diamante. Por eso ven asi con la humanidad alma de diamante")
+	var cancionCrisantemo = new Cancion("Crisantemo",175,"Tocame junto a esta pared, yo quede por aqui... cuando no hubo mi luz... quiero mirar a traves de mi piel... Crisantemo, que se abrio... encuentra el camino hacia el cielo")
+	var cancionLaFamilia = new Cancion("La Familia",264,"Quiero brindar por mi gente sencilla, por el amor brindo por la familia")
+	var cancionEres = new Cancion("Eres",145,"Eres lo mejor que me paso en la vida, no tengo duda, no habri mis nada despues de ti. Eres lo que le dio brillo al dia a dia, y asi sere por siempre, no cambiara, hasta el final de mis dias.")
+	var cancionCorazonAmericano = new Cancion("Corazon Americano",154,"Canta corazon, canta mas alto, que tu pena al fin se va marchando, el nuevo milenio ha de encontrarnos, junto corazon, como soniamos.")
+	var especialLaFamilia = new Album("Especial la familia",17,06,1992,100000,89000)
+	var laSole = new Album("La Sole",04,02,2005,200000,130000)
+	var paraLosArboles = new Album("Para los arboles",31,03,2003,50000,49000)
+	var justCrisantemo = new Album("Just Crisantemo",05,12,2007,28000,27500)
+	
+	var fecha1 = new Date(1,2,2017)
+	var fecha2 = new Date(30,6,2017)
+	
+	var imparero = new Imparero()
+	var palabreroDE = new Palabrero(" de ")
+	var cobraSegunInflacion = new SegunInflacion(1000,fecha1,20)
+	var luisAlberto = new Guitarrista(1000,fender)
+	var joaquin = new Musico(20)
+	var kike = new Musico(60)
+	var lucia = new VocalistaPopular(70)
+	var soledad = new Musico(55,new Palabrero("familia"),new SegunTocaSolo(6000))
+	var joaquinDeGrupo = new MusicoDeGrupo(20,5)
+	var prixe= new Lugar(150)
+	var laCueva = new Lugar(14000)
+	var presentacionPrixe = new Presentacion(prixe,fecha2)
+	var presentacionLaCueva = new Presentacion(laCueva,new Date(5,1,2018))
+	
+	var felix = new Representante(500)
+	var elEternoRetorno = new Banda(felix,buenaQuimica)
+	var cachorro  = new Representante(1982)
+	var pimpisole = new Banda(cachorro,noHayQuimica)
+	
+	
+	
+	fixture{
+
+		especialLaFamilia.agregarCancion(cancionLaFamilia)
+		laSole.agregarCancion(cancionCorazonAmericano)
+		laSole.agregarCancion(cancionEres)
+		luisAlberto.agregarAlbumPublicado(paraLosArboles)
+		luisAlberto.agregarAlbumPublicado(justCrisantemo)
+		joaquin.agregarAlbumPublicado(especialLaFamilia)
+		joaquinDeGrupo.agregarAlbumPublicado(especialLaFamilia)
+		paraLosArboles.agregarCancion(cancionCisne)
+		paraLosArboles.agregarCancion(cancionAlmaDeDiamante)
+		justCrisantemo.agregarCancion(cancionCrisantemo)
+		laSole.agregarCancion(cancionEres)
+		laSole.agregarCancion(cancionCorazonAmericano)
+		joaquinDeGrupo.entrarEnGrupo()
+		
+		elEternoRetorno.nuevoIntegrante(luisAlberto)
+		elEternoRetorno.nuevoIntegrante(kike)
+		pimpisole.nuevoIntegrante(lucia)
+		pimpisole.nuevoIntegrante(joaquin)
+		pimpisole.nuevoIntegrante(soledad)
+		
+		kike.hacerse(imparero)
+		kike.cobrarDeUnaForma(new SegunInflacion(4000,new Date(8,1,2018),50))
+		lucia.cobrarDeUnaForma(new SegunCapac(500,5000))
+		joaquin.cobrarDeUnaForma(new SegunTocaSolo(100))
+		
+		
+	}
+	test "queremos saber si joaquin canta bien la cancion La familia"{
+		assert.that(joaquin.interpretaBien(cancionLaFamilia))
+	}
+	test "probamos que joaquin NO canta bien la cancion Cisne"{
+	
+		joaquin.hacerse(imparero)
+		assert.notThat(joaquin.interpretaBien(cancionCisne))
+	}
+	test "Queremos probara kike pasandole una lista de canciones"{
+		kike.hacerse(palabreroDE)
+		assert.equals(#{cancionCorazonAmericano,cancionEres,cancionAlmaDeDiamante,cancionCrisantemo},kike.cualesPuedeInterpretar(#{cancionCorazonAmericano,cancionEres,cancionAlmaDeDiamante,cancionCrisantemo,cancionDeAlicia})) //no deberia interpretar bien la cancion de alicia
+	}
+	test "Queremos probara joaquin pasandole una lista de canciones"{
+		assert.equals(#{cancionLaFamilia,cancionCisne,cancionDeAlicia},joaquinDeGrupo.cualesPuedeInterpretar(#{cancionCisne,cancionLaFamilia,cancionCorazonAmericano,cancionEres,cancionAlmaDeDiamante,cancionCrisantemo,cancionDeAlicia}))
+	}
+	test "Queremos probar a joaquin siendo palabrero pasandole una lista de canciones"{
+		joaquin.hacerse(new Palabrero("xilofon"))//buscara palabra por palabra
+		assert.equals(#{cancionLaFamilia},joaquin.cualesPuedeInterpretar(#{cancionCisne,cancionLaFamilia,cancionCorazonAmericano,cancionEres,cancionAlmaDeDiamante,cancionCrisantemo,cancionDeAlicia}))
+	}
+	test "Queremos probar a lucia siendo imparera pasandole una lista de canciones"{
+		lucia.hacerse(new Imparero())
+		assert.equals(#{cancionEres,cancionCrisantemo},lucia.cualesPuedeInterpretar(#{cancionCisne,cancionLaFamilia,cancionCorazonAmericano,cancionEres,cancionAlmaDeDiamante,cancionCrisantemo,cancionDeAlicia}))
+	}
+	test "Queremos probar a joaquin siendo palabrero de xilofon pasandole una lista de canciones"{
+		joaquin.hacerse(new Palabrero("xilofon"))
+		assert.equals(#{cancionLaFamilia},joaquin.cualesPuedeInterpretar(#{cancionCisne,cancionLaFamilia,cancionCorazonAmericano,cancionEres,cancionAlmaDeDiamante,cancionCrisantemo,cancionDeAlicia}))
+	}
+	test "Joaquin pasa a cobrar por expectativa inflacionaria queremos saber cuanto cobra"{
+		joaquin.cobrarDeUnaForma(cobraSegunInflacion)
+		assert.equals(joaquin.cobra(presentacionPrixe),1200)
+	}
+	test "Lucia se hace imparera y queremos saber que canciones toca bien de una lista de canciones"{
+		lucia.hacerse(imparero)
+		assert.equals(#{cancionEres,cancionCrisantemo},lucia.cualesPuedeInterpretar(#{cancionCisne,cancionLaFamilia,cancionCorazonAmericano,cancionEres,cancionAlmaDeDiamante,cancionCrisantemo,cancionDeAlicia}))
+	}
+	test "Probamos a cambiar datos test: joaquin pasa a cobrar por expectativa inflacionaria"{
+		joaquin.cobrarDeUnaForma(cobraSegunInflacion)
+		presentacionPrixe.modificarFecha(new Date(24,1,2017))
+		assert.equals(joaquin.cobra(presentacionPrixe),1000)
+	}
+	test "Probar cuanto cobra joaquin en una presentacion con otros musicos"{
+		joaquin.cobrarDeUnaForma(new SegunTocaSolo(100))
+		presentacionPrixe.agregarCantante(joaquin)
+		presentacionPrixe.agregarCantante(lucia)
+		assert.equals(joaquin.cobra(presentacionPrixe),50)
+		
+	}
+	test "Probar a joaquin cambiando su forma de cobrar a segun la capacidad del lugar"{
+		joaquin.cobrarDeUnaForma(new SegunCapac(2500,13000))
+		assert.equals(joaquin.cobra(presentacionPrixe),2400)
+	}
+	test "Probar a joaquin nuevamente cambiando su forma de cobrar a segun la capacidad del lugar en una presentacion diferente"{
+		joaquin.cobrarDeUnaForma(new SegunCapac(2500,13000))
+		assert.equals(joaquin.cobra(presentacionLaCueva),2500)
+	}
+	test "probamos cuanto cobra el grupo el eterno retorno"{
+		assert.equals(5500,elEternoRetorno.cobraBanda(presentacionPrixe))
+	}
+	test "probamos cuanto cuesta la presentacion prixe"{
+		presentacionPrixe.meterUnaBanda(elEternoRetorno)
+		presentacionPrixe.agregarCantante(joaquin)
+		presentacionPrixe.agregarCantante(soledad)
+		assert.equals(8550,presentacionPrixe.costo())
+	}
+	test "Probamos cuanto debe pagar el productor del show de La Cueva"{
+		presentacionLaCueva.meterUnaBanda(pimpisole)
+		assert.equals(5532,presentacionLaCueva.costo())
+	}
+	test "Probamos la habilidad del El eterno retorno"{
+		assert.equals(154,elEternoRetorno.habilidadBanda())
+	}
+	test "Probamos la magia del show de Prixe"{
+		presentacionPrixe.meterUnaBanda(elEternoRetorno)
+		presentacionPrixe.agregarCantante(joaquinDeGrupo)
+		presentacionPrixe.agregarCantante(soledad)
+		assert.equals(presentacionPrixe.magia(),234)
+	}
+	test "saber si Pimpisole puede interpretar la cancion Cisne"{
+		assert.notThat(pimpisole.interpretanBien(cancionCisne))
+	}
+	test "saber si el eterno retorno puede interpretar la cancion Crisantemo"{
+		assert.that(elEternoRetorno.interpretanBien(cancionCrisantemo))
+	}
+
+	
+}

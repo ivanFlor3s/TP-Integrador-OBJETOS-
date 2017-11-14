@@ -1,0 +1,91 @@
+import Canciones.*
+import Pdpalooza.*
+import Artistas.*
+import Presentaciones.*
+import lugares.*
+import Guitarras.*
+
+
+describe "test de los cambios en las canciones para la entrega 3"{
+	
+	var cancionCisne = new Cancion("Cisne",312,"Hoy el viento se abrio quedo vacio el aire una vez mas y el manantial broto y nadie esta aqui y puedo ver que solo estallan las hojas al brillar")
+	var cancionAlmaDeDiamante = new Cancion("Alma de diamante",216,"Ven a mi con tu dulce luz alma de diamante. Y aunque el sol se nuble despues sos alma de diamante. Cielo o piel silencio o verdad sos alma de diamante. Por eso ven asi con la humanidad alma de diamante")
+	var cancionCrisantemo = new Cancion("Crisantemo",175,"Tocame junto a esta pared, yo quede por aqui... cuando no hubo mi luz... quiero mirar a traves de mi piel... Crisantemo, que se abrio... encuentra el camino hacia el cielo")
+	var cancionLaFamilia = new Cancion("La Familia",264,"Quiero brindar por mi gente sencilla, por el amor brindo por la familia")
+	var cancionEres = new Cancion("Eres",145,"Eres lo mejor que me paso en la vida, no tengo duda, no habri mis nada despues de ti. Eres lo que le dio brillo al dia a dia, y asi sere por siempre, no cambiara, hasta el final de mis dias.")
+	var cancionCorazonAmericano = new Cancion("Corazon Americano",154,"Canta corazon, canta mas alto, que tu pena al fin se va marchando, el nuevo milenio ha de encontrarnos, junto corazon, como soniamos.")
+	var especialLaFamilia = new Album("Especial la familia",17,06,1992,100000,89000)
+	var laSole = new Album("La Sole",04,02,2005,200000,130000)
+	var laFamiliaRemix = new Remix(cancionLaFamilia)
+	var almaDiamCrisantemo =  new Mashup([cancionAlmaDeDiamante,cancionCrisantemo])
+	var paraLosArboles = new Album("Para los arboles",31,03,2003,50000,49000)
+	var justCrisantemo = new Album("Just Crisantemo",05,12,2007,28000,27500)
+	
+	
+	var luisAlberto = new Guitarrista(1000,gibson)
+	var joaquin = new MusicoDeGrupo(20,5)
+	var lucia = new VocalistaPopular(90)
+	var soledad = new VocalistaPopular(80)
+	
+	var fecha1 = new Date(15,12,2017)
+	var cancionDeAlicia = new Cancion ("Cancion de Alicia",510,"Quien sabe Alicia, este pais no estuvo hecho porque si. Te vas a ir, vas a salir pero te quedas, donde mas vas a ir? y es que Aqui, sabes el trabalenguas, trabalenguas, el asesino te asesina, y es mucho para ti. Se acabo ese juego que te hacia feliz.")
+	var restriccionHab = new RestriccionHabilidad(70)
+	var restriccionCanc = new RestriccionCancion(cancionDeAlicia)
+	var restriccionPubl = new RestriccionCancPublic(1)
+	var pdpalooza = new PresentacionConRestricciones(lunaPark,fecha1,[restriccionHab,restriccionCanc,restriccionPubl])// ideal
+	
+	fixture{
+		especialLaFamilia.agregarCancion(cancionLaFamilia)
+		laSole.agregarCancion(cancionCorazonAmericano)
+		laSole.agregarCancion(cancionEres)
+		luisAlberto.agregarAlbumPublicado(paraLosArboles)
+		luisAlberto.agregarAlbumPublicado(justCrisantemo)
+		paraLosArboles.agregarCancion(cancionCisne)
+		paraLosArboles.agregarCancion(cancionAlmaDeDiamante)
+		justCrisantemo.agregarCancion(cancionCrisantemo)
+		soledad.agregarAlbumPublicado(laSole)
+		laSole.agregarCancion(cancionEres)
+		laSole.agregarCancion(cancionCorazonAmericano)
+		soledad.hacerseSolista()
+		lucia.hacerse(new Palabrero("familia"))
+		soledad.hacerse(new Palabrero("amor"))
+		
+	}
+	test "La cancion mas larga del album Especial La Familia es La familia"{
+		assert.equals("La Familia",especialLaFamilia.compararCanciones(porDuracion))
+	}
+	test "la cancion mas larga (duracion) del album La Sole es corazon Americano"{
+		assert.equals("Corazon Americano", laSole.compararCanciones(porDuracion))
+	}
+	test "la cancion mas larga (letra) del alnum de la sole es Eres"{
+		assert.equals("Eres",laSole.compararCanciones(porLetra))
+	}
+	test "La duracion del remix de la Familia es de 792"{
+		assert.equals(792,laFamiliaRemix.duracion())
+	}
+	test "Verifico si la letra del Remix de la familia es la esperada"{
+		assert.equals("mueve tu cuelpo baby Quiero brindar por mi gente sencilla, por el amor brindo por la familia yeah oh yeah",laFamiliaRemix.letra())
+	}
+	test "la duracion del Mashup de Alma de Diamante y Crisantemo es de 216"{
+		assert.equals(216,almaDiamCrisantemo.duracion())
+	}
+	test "la letra del Mashup de Alma de Diamante y Crisantemo es la esperada"{
+		assert.equals(almaDiamCrisantemo.letra(),
+			"Ven a mi con tu dulce luz alma de diamante. Y aunque el sol se nuble despues sos alma de diamante. Cielo o piel silencio o verdad sos alma de diamante. Por eso ven asi con la humanidad alma de diamante Tocame junto a esta pared, yo quede por aqui... cuando no hubo mi luz... quiero mirar a traves de mi piel... Crisantemo, que se abrio... encuentra el camino hacia el cielo")
+	}
+	test "debe ser posible agregar a LuisAlberto al pdpalooza"{
+		pdpalooza.agregarCantante(luisAlberto)
+		assert.that(pdpalooza.artistas().contains(luisAlberto))
+	}
+	test "no es posible agregar a joaquin como solista al pdpalooza"{
+		assert.throwsException( {pdpalooza.agregarCantante(joaquin)} ) 
+	}
+	test "no es posible agregar a lucia como solista al pdpalooza"{
+		assert.throwsException({pdpalooza.agregarCantante(lucia)})
+	}
+	test "Soledad debe estar entre los musicos del recital"{
+		pdpalooza.agregarCantante(soledad)
+		assert.that(pdpalooza.artistas().contains(soledad))
+	}
+	
+}
